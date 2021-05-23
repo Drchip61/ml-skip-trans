@@ -1,29 +1,50 @@
-# Data Preparing
+# TransUNet
+This repo holds code for [TransUNet: Transformers Make Strong Encoders for Medical Image Segmentation](https://arxiv.org/pdf/2102.04306.pdf)
 
-1. Access to the synapse multi-organ dataset:
-   1. Sign up in the [official Synapse website](https://www.synapse.org/#!Synapse:syn3193805/wiki/) and download the dataset. Convert them to numpy format, clip the images within [-125, 275], normalize each 3D image to [0, 1], and extract 2D slices from 3D volume for training cases while keeping the 3D volume in h5 format for testing cases.
-   2.  You can also send an Email directly to jienengchen01 AT gmail.com to request the preprocessed data for reproduction.
-2. The directory structure of the whole project is as follows:
+## Usage
+
+### 1. Download Google pre-trained ViT models
+* [Get models in this link](https://console.cloud.google.com/storage/vit_models/): R50-ViT-B_16, ViT-B_16, ViT-L_16...
+```bash
+wget https://storage.googleapis.com/vit_models/imagenet21k/{MODEL_NAME}.npz &&
+mkdir ../model/vit_checkpoint/imagenet21k &&
+mv {MODEL_NAME}.npz ../model/vit_checkpoint/imagenet21k/{MODEL_NAME}.npz
+```
+
+### 2. Prepare data
+
+Please go to ["./datasets/README.md"](datasets/README.md) for details, or please send an Email to jienengchen01 AT gmail.com to request the preprocessed data. If you would like to use the preprocessed data, please use it for research purposes and do not redistribute it.
+
+### 3. Environment
+
+Please prepare an environment with python=3.7, and then use the command "pip install -r requirements.txt" for the dependencies.
+
+### 4. Train/Test
+
+- Run the train script on synapse dataset. The batch size can be reduced to 12 or 6 to save memory (please also decrease the base_lr linearly), and both can reach similar performance.
 
 ```bash
-.
-├── TransUNet
-│   ├──datasets
-│   │       └── dataset_*.py
-│   ├──train.py
-│   ├──test.py
-│   └──...
-├── model
-│   └── vit_checkpoint
-│       └── imagenet21k
-│           ├── R50+ViT-B_16.npz
-│           └── *.npz
-└── data
-    └──Synapse
-        ├── test_vol_h5
-        │   ├── case0001.npy.h5
-        │   └── *.npy.h5
-        └── train_npz
-            ├── case0005_slice000.npz
-            └── *.npz
+CUDA_VISIBLE_DEVICES=0 python train.py --dataset Synapse --vit_name R50-ViT-B_16
+```
+
+- Run the test script on synapse dataset. It supports testing for both 2D images and 3D volumes.
+
+```bash
+python test.py --dataset Synapse --vit_name R50-ViT-B_16
+```
+
+## Reference
+* [Google ViT](https://github.com/google-research/vision_transformer)
+* [ViT-pytorch](https://github.com/jeonsworld/ViT-pytorch)
+* [segmentation_models.pytorch](https://github.com/qubvel/segmentation_models.pytorch)
+
+## Citations
+
+```bibtex
+@article{chen2021transunet,
+  title={TransUNet: Transformers Make Strong Encoders for Medical Image Segmentation},
+  author={Chen, Jieneng and Lu, Yongyi and Yu, Qihang and Luo, Xiangde and Adeli, Ehsan and Wang, Yan and Lu, Le and Yuille, Alan L., and Zhou, Yuyin},
+  journal={arXiv preprint arXiv:2102.04306},
+  year={2021}
+}
 ```
