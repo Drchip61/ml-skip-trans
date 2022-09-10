@@ -1,5 +1,5 @@
-# Sktr
-This repo holds code for [Sktr:Skip-Transformer Unet]
+# Ynet-Swin
+First Try
 
 ## Usage
 
