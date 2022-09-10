@@ -42,9 +42,9 @@ python test.py --dataset Synapse --vit_name R50-ViT-B_16
 
 ```bibtex
 @
-  title={Skip-Transformer Unet},
+  title={Swin Ynet},
   author={Tianyu Yan, Fuzi Wan},
   journal={投哪一篇呢嘿嘿},
-  year={2021}
+  year={2022}
 }
 ```
